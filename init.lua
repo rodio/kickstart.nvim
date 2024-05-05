@@ -661,24 +661,6 @@ require('lazy').setup({
       },
     },
   },
-  {
-    'nvim-tree/nvim-web-devicons',
-    enabled = true,
-  },
-
-  {
-    'nvim-tree/nvim-tree.lua',
-    version = '*',
-    lazy = false,
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-    },
-    config = function()
-      require('nvim-tree').setup {
-        vim.keymap.set('n', '<Leader>t', ':NvimTreeToggle<CR>', { desc = 'Toggle NvimTree' }),
-      }
-    end,
-  },
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -895,7 +877,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
