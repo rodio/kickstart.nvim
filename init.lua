@@ -536,7 +536,6 @@ require('lazy').setup({
               end,
             })
           end
-
           -- The following autocommand is used to enable inlay hints in your
           -- code, if the language server you are using supports them
           --
@@ -920,6 +919,10 @@ require('lazy').setup({
 })
 
 require 'my'
+
+vim.diagnostic.config {
+  virtual_text = false,
+}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
