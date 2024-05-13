@@ -575,7 +575,7 @@ require('lazy').setup({
               rustfmt = {
                 -- TODO: try https://github.com/folke/neoconf.nvim
                 -- https://github.com/bram209/leptosfmt?tab=readme-ov-file#using-with-rust-analyzer
-                overrideCommand = { 'leptosfmt', '--stdin', '--rustfmt' },
+                -- overrideCommand = { 'leptosfmt', '--stdin', '--rustfmt' },
               },
             },
           },
