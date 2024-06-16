@@ -632,6 +632,11 @@ require('lazy').setup({
           end,
         },
       }
+
+      local lspconfig = require 'lspconfig'
+      lspconfig.sourcekit.setup {
+        cmd = { '/Users/rodion/sourcekit-lsp' },
+      }
     end,
   },
 
@@ -662,6 +667,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        swift = { 'swiftformat' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -845,7 +851,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
