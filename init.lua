@@ -227,6 +227,53 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  {
+    'theHamsta/nvim-dap-virtual-text',
+  },
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^4', -- Recommended
+    lazy = false, -- This plugin is already lazy
+    dependencies = {
+      'mfussenegger/nvim-dap',
+      'rcarriga/nvim-dap-ui',
+    },
+    config = function()
+      require('mason-nvim-dap').setup {
+        ensure_installed = { 'codelldb' },
+        automatic_installation = true,
+      }
+      require('nvim-dap-virtual-text').setup()
+      local dap = require 'dap'
+      dap.adapters.codelldb = {
+        type = 'server',
+        port = '${port}',
+        executable = {
+          command = '/Users/rodion/codelldb/extension/adapter/codelldb',
+          args = { '--port', '${port}' },
+        },
+      }
+      dap.configurations.rust = {
+        {
+          name = 'Launch file',
+          type = 'codelldb',
+          request = 'launch',
+          program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          end,
+          args = function()
+            local args = {}
+            for arg in string.gmatch(vim.fn.input('Args: ', '', 'file'), '[^%s]+') do
+              args[#args + 1] = arg
+            end
+            return args
+          end,
+          cwd = '${workspaceFolder}',
+          stopOnEntry = false,
+        },
+      }
+    end,
+  },
 
   'onsails/lspkind.nvim',
 
@@ -570,17 +617,6 @@ require('lazy').setup({
         clangd = {},
         -- gopls = {},
         pyright = {},
-        rust_analyzer = {
-          settings = {
-            ['rust-analyzer'] = {
-              rustfmt = {
-                -- TODO: try https://github.com/folke/neoconf.nvim
-                -- https://github.com/bram209/leptosfmt?tab=readme-ov-file#using-with-rust-analyzer
-                -- overrideCommand = { 'leptosfmt', '--stdin', '--rustfmt' },
-              },
-            },
-          },
-        },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -907,7 +943,7 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
@@ -947,7 +983,7 @@ require('lazy').setup({
 require 'my'
 
 vim.diagnostic.config {
-  virtual_text = false,
+  virtual_text = true,
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
